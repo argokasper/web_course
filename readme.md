@@ -15,5 +15,10 @@ Numberd list:
 4. CSS
 
 
+Add checkboxes
+- [ ] (1 valik)
+- [ ] (2 valik)
+- [ ] (3 valik)
+- [ ] (4 valik)
 
 Edit
