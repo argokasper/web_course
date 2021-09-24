@@ -43,7 +43,7 @@ console.log('Väikseim arv:' + minNum);
 
 // Lahendus:
 // Loome muutuja:
-var num = 10; // seda arvu muudame, et näha teisi väljundeid
+var num = 19; // seda arvu muudame, et näha teisi väljundeid
 
 if (num % 2 === 0) {
     var ruut = Math.pow(num, 2); // Võtame arvu 2 astmesse
@@ -52,5 +52,3 @@ if (num % 2 === 0) {
     var ruutjuur = Math.sqrt(num); // Võtame arvust ruutjuure
     console.log('Arv on paaritu ja tema ruutjuur on:' + ruutjuur); // prindime välja
 }
-
-
