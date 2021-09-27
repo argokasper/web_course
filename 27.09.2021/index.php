@@ -1,0 +1,1 @@
+<a href="/calculator.php">Mine kalkulaatori lehele</a>
