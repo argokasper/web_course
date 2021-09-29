@@ -4,7 +4,10 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
     const form = document.getElementById('form');
     form.addEventListener('submit', sendRequest);
 
-    // Tekitame funktsiooni, mis
+    /**
+     * Tekitame funktsiooni, mis saadab serverisse meie saadetud sõnumi
+     * @param {SubmitEvent} event
+     */
     function sendRequest(event) {
         document.getElementById('sendButton').disabled = true; // Keelame saata, kuni pole vastust saanud
         const message = document.getElementById('messageInput').value;
@@ -49,6 +52,10 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
         }
     }
 
+    /**
+     *
+     * @param {string} message
+     */
     function addMyMessage(message) {
         const container = document.getElementById('pastMessages');
         const messageContainer = document.createElement('div');
@@ -71,7 +78,10 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
     }
 };
 
-
+/**
+ *
+ * @param {HtmlElement} container
+ */
 function scrollBottom(container) {
-    container.scrollTop = container.scrollHeight;;
+    container.scrollTop = container.scrollHeight;
 }

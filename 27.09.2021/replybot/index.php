@@ -7,7 +7,7 @@
     <?php
     // Lisame siia template'i, mis on taaskasutatav kõikide lehtede <head> osas
     // See annab meile võimaluse taaskasutada sama faili mitmes lehes
-    include_once("partials/head.php");
+    include_once('partials/head.php');
     ?>
     <title>ReplyBot</title>
     <script src="js/main.js"></script>
@@ -32,6 +32,10 @@
         >
         <?php
             $messages = [];
+            // tahame siia html'i, siis
+            ?>
+                <div></div>
+            <?php
             // Kui pole ühtegi sõnumit, siis kuvame infot selle kohta
             if (count($messages) === 0) { ?>
                 <div style="
@@ -49,9 +53,15 @@
                 ">
                     <p>Hetkel sõnumid puuduvad.</p>
                 </div>
-            <?php }
-            // Siia ilmub saadetud sõnumite vastused
-            // kasutme tsükleid, et kuvada välja kõik vastused
+            <?php } else {
+                // Siia ilmub saadetud sõnumite vastused
+                // kasutme tsükleid, et kuvada välja kõik vastused
+                foreach ($messages as $message) {
+                    // loome sõnumite plokke
+                    // tegevused
+                }
+            }
+
         ?>
     </section>
     <form
