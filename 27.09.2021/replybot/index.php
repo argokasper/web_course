@@ -1,6 +1,15 @@
 <?php
 // Esileht, url=/
 // teeme lehe avalikuks urlil: argo.local/replybot
+
+// . = "replybot"
+// fail asub database/Connection.php
+include_once('./database/Connection.php'); // impordime andmebaasi ühenduse klassi teisest failist
+$connection = new Connection();
+
+if (!($connection->connect_error)) {
+    echo "Ühendus õnnestus!";
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,7 +40,7 @@
             "
         >
         <?php
-            $messages = [];
+            $messages = $connection->getMessages();
             // tahame siia html'i, siis
             ?>
                 <div></div>
@@ -59,6 +68,7 @@
                 foreach ($messages as $message) {
                     // loome sõnumite plokke
                     // tegevused
+                    var_dump($message);
                 }
             }
 

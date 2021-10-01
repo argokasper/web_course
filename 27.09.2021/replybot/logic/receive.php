@@ -1,5 +1,11 @@
 <?php
-header('Content-Type: application/json; charset=UTF-8'); // määrame ära, et kõik sereri vastused on json kujul
+// . = "logic"
+// .. = "replybot"
+// fail asub database/Connection.php
+include_once('./../database/Connection.php');
+
+// KODUTÖÖ3: initsialiseerime andmebaasi ühenduse:
+$connection = new Connection();
 
 $message = ''; // algväärtustame muutuja
 
@@ -10,6 +16,10 @@ if (isset($_POST['message']) && $_POST['message'] !== '') {
     // sleep(rand(1, 4)); // Pausime skripti 1-4 sekundiks - jätame mulje, et BOT mõtleb
 
     $reply = processMessage($message);
+
+    // KODUTÖÖ3: Salvestame Bot'i poolt genereeritud sõnumi ka andmebaasi:
+    $connection->insertMessage($message);
+
     sendResponse([ 'reply' => $reply ]);
 } else {
     // Tegeleme veaga. Kui message'it ei saadeta serverisse, siis saadame vastuseks veateate
@@ -49,6 +59,7 @@ function processMessage(string $message): string {
  * Lisame päiseid ning vormindame data JSON kujule
  */
 function sendResponse(array $data, int $statusCode = 200) {
+    header('Content-Type: application/json; charset=UTF-8'); // määrame ära, et kõik sereri vastused on json kujul
     http_response_code($statusCode);
     echo json_encode($data);
 }
