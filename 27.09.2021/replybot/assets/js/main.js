@@ -4,6 +4,14 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
     const form = document.getElementById('form');
     form.addEventListener('submit', sendRequest);
 
+    // delete nuppude triggerite lisamine
+    const deleteButtons = document.getElementsByClassName('delete');
+    for(button of deleteButtons) {
+        // seome ära 'click' event'i kõikidele delete nuppudele
+        button.addEventListener('click', deleteMessage);
+    }
+
+
     /**
      * Tekitame funktsiooni, mis saadab serverisse meie saadetud sõnumi
      * @param {SubmitEvent} event
@@ -32,19 +40,8 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
                 const reply = (JSON.parse(Http.responseText)).reply;
                 const container = document.getElementById('pastMessages');
                 const messageContainer = document.createElement('div');
-                messageContainer.style=`
-                    flex-shrink: 0;
-                    align-self: flex-start;
-                    min-width: 100px;
-                    max-width: 300px;
-                    min-height: 20px;
-                    line-height: 20px;
-                    margin: 10px;
-                    padding: 5px;
-                    border-radius: 10px;
-                    background-color: dodgerblue;
-                    color: white;
-                `;
+                messageContainer.className = 'messages';
+
                 messageContainer.innerHTML = `<p>${reply}</p>`
                 container.appendChild(messageContainer);
                 scrollBottom(container);
@@ -59,22 +56,38 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
     function addMyMessage(message) {
         const container = document.getElementById('pastMessages');
         const messageContainer = document.createElement('div');
-        messageContainer.style=`
-            flex-shrink: 0;
-            align-self: flex-end;
-            min-width: 100px;
-            max-width: 300px;
-            min-height: 20px;
-            line-height: 20px;
-            margin: 10px;
-            padding: 5px;
-            border-radius: 10px;
-            background-color: lightblue;
-            color: white;
-        `;
+        messageContainer.className = 'messages my-messages';
+
         messageContainer.innerHTML = `<p>${message}</p>`
         container.appendChild(messageContainer);
         scrollBottom(container);
+    }
+
+    /**
+     * Kasutaja kustusamise nupu vajutuse peale käivitatav JS funktsioon.
+     * Siin kutsume välja meie PHP delete funktsiooni üle HTTP päringu
+     * @param {PointerEvent} event
+     */
+    function deleteMessage(event) {
+        const button = event.target;
+        const messageId = button.dataset.id;
+
+        const Http = new XMLHttpRequest();
+        const url=`/replybot/logic/delete.php?message_id=${messageId}`;
+
+        Http.open('DELETE', url);
+        Http.send();
+
+        // Kuulame päringu erinevaid evente
+        Http.onreadystatechange = (e) => {
+            // Püüame kinni done(4) event'i kui status on 200 (OK)
+            if (Http.readyState === 4 && Http.status === 200) {
+                const messageContainer = button.parentNode;
+                messageContainer.remove()
+            } else if (Http.readyState === 4 && Http.status !== 200) {
+                console.log('Ilnes viga!');
+            }
+        };
     }
 };
 

@@ -2,9 +2,10 @@
 // . = "logic"
 // .. = "replybot"
 // fail asub database/Connection.php
+include_once('./../models/Message.php');
 include_once('./../database/Connection.php');
 
-// KODUTÖÖ3: initsialiseerime andmebaasi ühenduse:
+// initsialiseerime andmebaasi ühenduse:
 $connection = new Connection();
 
 $message = ''; // algväärtustame muutuja
@@ -13,12 +14,14 @@ $message = ''; // algväärtustame muutuja
 if (isset($_POST['message']) && $_POST['message'] !== '') {
     $message = $_POST['message'];
 
+    // Salvestame iseenda sõnumi:
+    $connection->insertMessage($message);
     // sleep(rand(1, 4)); // Pausime skripti 1-4 sekundiks - jätame mulje, et BOT mõtleb
 
     $reply = processMessage($message);
 
-    // KODUTÖÖ3: Salvestame Bot'i poolt genereeritud sõnumi ka andmebaasi:
-    $connection->insertMessage($message);
+    // Salvestame Bot'i poolt genereeritud sõnumi ka andmebaasi:
+    $connection->insertMessage($reply, 100);
 
     sendResponse([ 'reply' => $reply ]);
 } else {

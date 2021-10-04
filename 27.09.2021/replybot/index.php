@@ -5,40 +5,24 @@
 // . = "replybot"
 // fail asub database/Connection.php
 include_once('./database/Connection.php'); // impordime andmebaasi ühenduse klassi teisest failist
+include_once('./models/Message.php');
 $connection = new Connection();
 
-if (!($connection->connect_error)) {
-    echo "Ühendus õnnestus!";
-}
 ?>
 <!DOCTYPE html>
 <html>
     <?php
     // Lisame siia template'i, mis on taaskasutatav kõikide lehtede <head> osas
     // See annab meile võimaluse taaskasutada sama faili mitmes lehes
+    // partials/head.php sisaldab endas JS ning CSS failide importe
     include_once('partials/head.php');
     ?>
     <title>ReplyBot</title>
-    <script src="js/main.js"></script>
 <body>
 
     <h1>Tere tulemast ReplyBot-i!</h1>
     <subtitle>Võid siia kirjutada mida iganes ning ReplyBot vastab sulle alati.</subtitle>
-    <section
-        id="pastMessages"
-        style="
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            height: 500px;
-            width: 400px;
-            border: 1px solid #000;
-            padding: 10px;
-            margin-top:10px;
-            margin-bottom:10px;
-            overflow-y: auto;
-            "
-        >
+    <section id="pastMessages">
         <?php
             $messages = $connection->getMessages();
             // tahame siia html'i, siis
@@ -47,28 +31,19 @@ if (!($connection->connect_error)) {
             <?php
             // Kui pole ühtegi sõnumit, siis kuvame infot selle kohta
             if (count($messages) === 0) { ?>
-                <div style="
-                    flex-shrink: 0;
-                    align-self: flex-start;
-                    min-width: 100px;
-                    max-width: 300px;
-                    min-height: 20px;
-                    line-height: 20px;
-                    margin: 10px;
-                    padding: 5px;
-                    border-radius: 10px;
-                    background-color: dodgerblue;
-                    color: white;
-                ">
+                <div class="messages no-entries-message">
                     <p>Hetkel sõnumid puuduvad.</p>
                 </div>
             <?php } else {
                 // Siia ilmub saadetud sõnumite vastused
-                // kasutme tsükleid, et kuvada välja kõik vastused
+                // kasutame tsükleid, et kuvada välja kõik sõnumid
                 foreach ($messages as $message) {
-                    // loome sõnumite plokke
-                    // tegevused
-                    var_dump($message);
+                    ?>
+                    <div class="messages <?php echo $message->userId ? '' : 'my-messages'; ?>">
+                        <span class="delete" data-id="<?php echo $message->id; ?>">x</span>
+                        <p><?php echo $message->content; ?></p>
+                    </div>
+                    <?php
                 }
             }
 
