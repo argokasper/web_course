@@ -96,5 +96,8 @@ class Connection {
         return $messages;
     }
 
-    // TODO! siia lisada deleteMessage funktsioon
+    public function deleteMessage(int $messageId): bool
+    {
+
+    }
 }

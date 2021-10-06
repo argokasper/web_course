@@ -11,6 +11,9 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
         button.addEventListener('click', deleteMessage);
     }
 
+    const messageInput = document.getElementById('messageInput');
+    messageInput.addEventListener('change', checkInput);
+
 
     /**
      * Tekitame funktsiooni, mis saadab serverisse meie saadetud sõnumi
@@ -35,16 +38,18 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
         // Kuulame päringu erinevaid evente
         Http.onreadystatechange = (e) => {
             // Püüame kinni done(4) event'i kui status on 200 (OK)
-            if (Http.readyState === 4 && Http.status === 200) {
-                document.getElementById('sendButton').disabled = false; // Lubame nuppu uuesti vajutada
-                const reply = (JSON.parse(Http.responseText)).reply;
-                const container = document.getElementById('pastMessages');
-                const messageContainer = document.createElement('div');
-                messageContainer.className = 'messages';
+            if (Http.readyState === 4) {
+                if (Http.status === 200) {
+                    const reply = (JSON.parse(Http.responseText)).reply;
+                    const container = document.getElementById('pastMessages');
+                    const messageContainer = document.createElement('div');
+                    messageContainer.className = 'messages';
 
-                messageContainer.innerHTML = `<p>${reply}</p>`
-                container.appendChild(messageContainer);
-                scrollBottom(container);
+                    messageContainer.innerHTML = `<p>${reply}</p>`
+                    container.appendChild(messageContainer);
+                    scrollBottom(container);
+                }
+                document.getElementById('sendButton').disabled = false; // Lubame nuppu uuesti vajutada
             }
         }
     }
@@ -88,6 +93,12 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
                 console.log('Ilnes viga!');
             }
         };
+    }
+
+    function checkInput(event) {
+        const value = event.target;
+        const sendButton = document.getElementById('sendButton');
+        sendButton.disabled = target.value.length > 0;
     }
 };
 
