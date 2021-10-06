@@ -6,13 +6,14 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
 
     // delete nuppude triggerite lisamine
     const deleteButtons = document.getElementsByClassName('delete');
-    for(button of deleteButtons) {
+
+    for (button of deleteButtons) {
         // seome ära 'click' event'i kõikidele delete nuppudele
         button.addEventListener('click', deleteMessage);
     }
 
     const messageInput = document.getElementById('messageInput');
-    messageInput.addEventListener('change', checkInput);
+    messageInput.addEventListener('input', checkInput);
 
 
     /**
@@ -27,11 +28,12 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
         document.getElementById('messageInput').value = ''; // teeme oma sisendi tühjaks
 
         event.preventDefault(); // kui see .preventDefault() välja kutsuda, siis ei käivitata browseri vaikimisi päringut
-        const postParams = `message=${message}`;
+        const postParams = `message=${message}`; // -> "message=Tere"
         const Http = new XMLHttpRequest();
         const url='/replybot/logic/receive.php';
+        // const url = 'https://api.google.ee/receive'
 
-        Http.open('POST', url);
+        Http.open('post', url); // Võimalikud veebiprotokollid: GET, PUT, DELETE, PATCH, HEAD, OPTIONS, POST
         Http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         Http.send(postParams);
 
@@ -90,7 +92,7 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
                 const messageContainer = button.parentNode;
                 messageContainer.remove()
             } else if (Http.readyState === 4 && Http.status !== 200) {
-                console.log('Ilnes viga!');
+                console.log('Ilmnes viga!');
             }
         };
     }
@@ -98,7 +100,7 @@ window.onload = () => { // ootame ära, kuni HTML on end browser'is ära laadinu
     function checkInput(event) {
         const value = event.target;
         const sendButton = document.getElementById('sendButton');
-        sendButton.disabled = target.value.length > 0;
+        sendButton.disabled = value.length > 0;
     }
 };
 

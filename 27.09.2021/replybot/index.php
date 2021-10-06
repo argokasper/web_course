@@ -11,15 +11,16 @@ $connection = new Connection();
 ?>
 <!DOCTYPE html>
 <html>
-    <?php
-    // Lisame siia template'i, mis on taaskasutatav kõikide lehtede <head> osas
-    // See annab meile võimaluse taaskasutada sama faili mitmes lehes
-    // partials/head.php sisaldab endas JS ning CSS failide importe
-    include_once('partials/head.php');
-    ?>
-    <title>ReplyBot</title>
+    <head>
+        <?php
+        // Lisame siia template'i, mis on taaskasutatav kõikide lehtede <head> osas
+        // See annab meile võimaluse taaskasutada sama faili mitmes lehes
+        // partials/head.php sisaldab endas JS ning CSS failide importe
+        include_once('partials/head.php');
+        ?>
+        <title>ReplyBot</title>
+    </head>
 <body>
-
     <h1>Tere tulemast ReplyBot-i!</h1>
     <subtitle>Võid siia kirjutada mida iganes ning ReplyBot vastab sulle alati.</subtitle>
     <section id="pastMessages">
@@ -37,11 +38,22 @@ $connection = new Connection();
             <?php } else {
                 // Siia ilmub saadetud sõnumite vastused
                 // kasutame tsükleid, et kuvada välja kõik sõnumid
+                // $message object sisaldab:
+                // id integer
+                // content string
+                // userId integer
+                // createdAt DateTime
                 foreach ($messages as $message) {
                     ?>
                     <div class="messages <?php echo $message->userId ? '' : 'my-messages'; ?>">
                         <span class="delete" data-id="<?php echo $message->id; ?>">x</span>
                         <p><?php echo $message->content; ?></p>
+                        <span class="timestamp"><?php
+                            echo $message->createdAt->diff(new DateTime())->format('%d') < 1 ?
+                                $message->createdAt->format('H:i:s')
+                                :
+                                $message->createdAt->format('d.m.Y H:i:s')
+                        ?></span>
                     </div>
                     <?php
                 }

@@ -96,8 +96,21 @@ class Connection {
         return $messages;
     }
 
+    /**
+     * Meetod kustutab $messageId järgi andmebaasist sõnumi
+     * @param int $messageId
+     * @return bool
+     */
     public function deleteMessage(int $messageId): bool
     {
+        $sql = 'DELETE FROM messages WHERE id=?';
+        $statement = $this->connection->prepare($sql);
+        // i = integer
+        // s = string
+        // d = double e komaga arv
+        // b = blob e bytes
+        $statement->bind_param('i', $messageId);
 
+        return $statement->execute() && $statement->affected_rows === 1; // true if success, false otherwise
     }
 }

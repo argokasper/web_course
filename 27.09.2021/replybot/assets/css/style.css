@@ -10,6 +10,14 @@
     margin-bottom:10px;
     overflow-y: auto;
 }
+argo {
+    font-size: 25px;
+}
+
+.timestamp {
+    font-size: 12px;
+    color: black;
+}
 
 .messages {
     flex-shrink: 0;
@@ -43,7 +51,7 @@
     border-radius: 50%;
     border: 1px solid black;
     color: black;
-    font-size: 20px;
+    font-size: 20px; /* vaikimisi font-size = 16px = 1rem; 1.2rem = 20px */
     width: 25px;
     height: 25px;
     line-height: 25px;
