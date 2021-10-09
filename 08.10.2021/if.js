@@ -1,3 +1,4 @@
+// Lisalugemist, -uurimist: https://www.w3schools.com/js/js_if_else.asp
 
 const number = 0;
 
@@ -13,12 +14,12 @@ if (number === 10) { // väär
 
 const arv = 15;
 
-const jaak2ga = arv % 2;
+const jaak2ga = arv % 2; // modulo tehe: https://press.rebus.community/programmingfundamentals/chapter/integer-division-and-modulus/
 
 console.log(jaak2ga);
 
-if (jaak2ga === 0) console.log(arv + ': ' + 'paarisarv'); // stringide kokkuliitmine contact stiilis
-else console.log(`${arv}: paaritu arv`); // string'ide kokku liitmine interpolatsiooniga (string interpolation `${variable}`)
+if (jaak2ga === 0) console.log(arv + ': ' + 'paarisarv'); // stringide kokkuliitmine contact stiilis: https://masteringjs.io/tutorials/fundamentals/string-concat (Esimene on teema kohta, aga seal on veel 2 meetodit lisaks)
+else console.log(`${arv}: paaritu arv`); // string'ide kokku liitmine interpolatsiooniga (string interpolation `${variable}`): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
 
 // ----
 console.log(!1);

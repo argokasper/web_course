@@ -1,3 +1,8 @@
+// Lisalugemist, -uurimist:
+// 1. https://www.w3schools.com/js/js_loop_for.asp
+// 2. https://www.w3schools.com/js/js_loop_forin.asp
+// 3. https://www.w3schools.com/js/js_loop_forof.asp
+
 algarv = 0; // lõpp tulemus oleks 10;
 // console.log(`algarv on ${algarv}`);
 

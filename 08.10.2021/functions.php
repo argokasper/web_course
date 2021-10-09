@@ -1,4 +1,5 @@
 <?php
+// Lisalugemist, -uurimist: https://www.w3schools.com/php/php_functions.asp
 
 function myFunction() {
     return "Hello world!\n";

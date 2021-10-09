@@ -1,3 +1,5 @@
+// Lisalugemist, -uurimist: https://www.w3schools.com/js/js_functions.asp
+
 // function [functionName]()
 function myFunction() {
     console.log('Hello world!');
