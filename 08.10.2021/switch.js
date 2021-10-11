@@ -13,8 +13,6 @@ switch (tekst) {
     case 'Tere tere':
         vastus = 'Hi again!';
         break;
-
-
 }
 
 console.log(vastus);
