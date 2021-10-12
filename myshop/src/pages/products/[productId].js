@@ -1,16 +1,33 @@
-import styles from './Products.module.css';
+import styles from '../../styles/Products.module.css';
 
-const Product = ({
+const Product = ({ product }) => {
+  // SOME JS CODE
+  return (
+    <div className={styles.wrapper}>
+      <pre>{JSON.stringify(product)}</pre>
+    </div>
+  );
+};
+
+Product.getInitialProps = async ({ req, res, query }) => {
+    var url = null;
+    if (req) {
+        url = `http://${req.headers.host}/api/products/${query.productId}`;
+    } else {
+        url = `/api/products/${query.productId}`;
+    }
+
+    var product = null;
+    try {
+        const response = await fetch(url);
+        product = await response.json();
+    } catch (err) {
+        console.error(err);
+    }
+
+  return {
     product,
-}) => {
-
-    // SOME JS CODE
-
-    return (
-        <div className={styles.wrapper}>
-            <pre>{JSON.stringify(product)}</pre>
-        </div>
-    );
+  };
 };
 
 export default Product;
