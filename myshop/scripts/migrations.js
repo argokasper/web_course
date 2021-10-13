@@ -101,6 +101,27 @@ async function migrate() {
     )
     `);
 
+    // Muudame 'product' tabelis 'reduced_price' tulba mittekohustuslikuks
+    await query(`
+    ALTER TABLE products
+      MODIFY COLUMN reduced_price DECIMAL NULL;
+    `);
+
+    // Muudame 'categories' tabelis 'parent_id' tulba mittekohustuslikuks
+    await query(`
+    ALTER TABLE categories
+      MODIFY COLUMN parent_id INT UNSIGNED NULL,
+      MODIFY COLUMN description TEXT NULL;
+    `);
+
+    // Lisame 'categories' tabelisse uue välja: slug VARCHAR(255) NOT NULL
+    await query(`
+    ALTER TABLE categories
+      ADD COLUMN slug VARCHAR(255) NOT NULL
+      AFTER name;
+    `);
+
+
     console.log('migration ran successfully');
   } catch (e) {
     console.log(e);

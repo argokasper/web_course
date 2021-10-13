@@ -1,10 +1,14 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 
+import CategoriesMenu from '../components/CategoriesMenu';
 import ProductsBlock from '../components/ProductsBlock';
+
+import styles from '../styles/Home.module.css';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   // ühekordne käima panemine
   useEffect(async () => {
@@ -17,7 +21,19 @@ const Home = () => {
       console.error(error.message);
       setProducts([]);
     }
+
+    // Tahame pärida meie API käest kategooriaid:
+    try {
+      const response = await fetch('/api/categories');
+      const categoriesResponse = await response.json();
+      setCategories(categoriesResponse.categories);
+    } catch (error) {
+      console.error(error.message);
+      setCategories([]);
+    }
   }, []);
+
+
 
   return (
     <>
@@ -27,8 +43,15 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h2>Kõik tooted</h2>
-      <ProductsBlock products={products} show={6} />
+      <div className={styles.wrapper}>
+        <CategoriesMenu categories={categories} />
+
+        <div className={styles.productsBlock}>
+          <h2>Kõik tooted</h2>
+          <ProductsBlock products={products} show={6} />
+        </div>
+      </div>
+
     </>
   );
 };
