@@ -11,7 +11,7 @@ const CategoriesMenu = ({ categories = [] }) => {
             <menu className={styles.wrapper}>
                 {categories.map(category => (
                     <div className={styles.category}>
-                        <Link href={`/category/${category.slug}`}>{category.name}</Link>
+                        <Link href={`/kategooriad/${category.slug}`}>{category.name}</Link>
                     </div>
                 ))}
             </menu>

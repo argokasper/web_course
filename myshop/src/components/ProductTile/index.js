@@ -9,7 +9,7 @@ const ProductTile = ({
     // SOME JS CODE
 
     return (
-        <Link href={`/products/${product.id}`} className={styles.wrapper}>
+        <Link href={`/tooted/${product.slug}`} className={styles.wrapper}>
             {product.title}
         </Link>
     );

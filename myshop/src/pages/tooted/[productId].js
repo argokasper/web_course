@@ -9,7 +9,7 @@ const Product = ({ product }) => {
   );
 };
 
-Product.getInitialProps = async ({ req, res, query }) => {
+Product.getInitialProps = async ({ req, query }) => {
     var url = null;
     if (req) {
         url = `http://${req.headers.host}/api/products/${query.productId}`;
