@@ -27,8 +27,12 @@ const ProductsBlock = ({
       {croppedProducts.map((product) => (
         <ProductTile key={product.id} product={product} />
       ))}
-      {showPlaceholderWhenEmpty && products.length === 0 && <ProductTile product={EXAMPLE_PRODUCT} />}
-      {hasMoreProducts && (<div className={styles.seeMore}>Vaata veel tooteid</div>)}
+      {showPlaceholderWhenEmpty && products.length === 0 && (
+        <ProductTile product={EXAMPLE_PRODUCT} />
+      )}
+      {hasMoreProducts && (
+        <div className={styles.seeMore}>Vaata veel tooteid</div>
+      )}
     </div>
   );
 };

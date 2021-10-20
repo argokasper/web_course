@@ -1,6 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 
+const MIGRATIONS_DIR = path.resolve(process.cwd(), 'migrations');
+
 const envLocalPath = path.resolve(process.cwd(), '.env.local');
 const envPath = path.resolve(process.cwd(), '.env');
 
@@ -44,85 +46,59 @@ async function query(q) {
   }
 }
 
+const initMigrations = async (tableName = 'migrations') => {
+  try {
+    const results = await db.query(`
+      CREATE TABLE IF NOT EXISTS ${tableName} (
+        name VARCHAR(255) PRIMARY KEY
+      )
+    `);
+    await db.end();
+    return results;
+  } catch (err) {
+    throw Error(e.message);
+  }
+};
+
+const notMigrated = async (file) => {
+  try {
+    const results = await db.query('SELECT COUNT(name) AS count FROM migrations WHERE name=?', [file]);
+    await db.end();
+    const count = results[0] ? results[0].count : 0;
+    return !count;
+  } catch (err) {
+    throw Error(err.message);
+  }
+};
+
+const markAsMigrated = async (file) => {
+  try {
+    const results = await db.query('INSERT INTO migrations (name) VALUES (?)', [file]);
+    await db.end();
+    return results;
+  } catch (err) {
+    throw Error(err.message);
+  }
+}
+
 // Create "entries" table if doesn't exist
 async function migrate() {
   try {
-    await query(`
-    CREATE TABLE IF NOT EXISTS products (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      title TEXT NOT NULL,
-      price DECIMAL NOT NULL,
-      reduced_price DECIMAL NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at
-        TIMESTAMP
-        NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP
-    )
-    `);
-
-    await query(`
-    CREATE TABLE IF NOT EXISTS categories (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name TEXT NOT NULL,
-      description TEXT NOT NULL,
-      parent_id INT UNSIGNED NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at
-        TIMESTAMP
-        NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP
-    )
-    `);
-
-    await query(`
-    CREATE TABLE IF NOT EXISTS products_categories (
-      product_id INT,
-      category_id INT,
-      PRIMARY KEY (product_id, category_id),
-      CONSTRAINT fk_pc_product_id FOREIGN KEY (product_id) REFERENCES products(id),
-      CONSTRAINT fk_pc_category_id FOREIGN KEY (category_id) REFERENCES categories(id)
-    )
-    `);
-
-    await query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      email VARCHAR(60) NOT NULL,
-      password VARCHAR(40) NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at
-        TIMESTAMP
-        NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP
-    )
-    `);
-
-    // Muudame 'product' tabelis 'reduced_price' tulba mittekohustuslikuks
-    await query(`
-    ALTER TABLE products
-      MODIFY COLUMN reduced_price DECIMAL NULL;
-    `);
-
-    // Muudame 'categories' tabelis 'parent_id' tulba mittekohustuslikuks
-    await query(`
-    ALTER TABLE categories
-      MODIFY COLUMN parent_id INT UNSIGNED NULL,
-      MODIFY COLUMN description TEXT NULL;
-    `);
-
-    // Lisame 'categories' tabelisse uue välja: slug VARCHAR(255) NOT NULL
-    await query(`
-    ALTER TABLE categories
-      ADD COLUMN slug VARCHAR(255) NOT NULL
-      AFTER name;
-    `);
-
-
-    console.log('migration ran successfully');
+    await initMigrations();
+    const files = fs.readdirSync(MIGRATIONS_DIR);
+    for (const file of files) {
+      if (await notMigrated(file)) {
+        const queries = require(`${MIGRATIONS_DIR}/${file}`);
+        console.log(`Migrating ${file}...`);
+        for (const q of queries) {
+          await query(q);
+        }
+        await markAsMigrated(file);
+        console.log(`${file} successfully migrated`);
+      }
+    }
+    db.quit();
+    console.log('Successful migration');
   } catch (e) {
     console.log(e);
     console.error('could not run migration, double check your credentials.');
