@@ -5,8 +5,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 
 import theme from '../theme';
-import { wrapper } from '../store';
+import wrapper from '../store';
 import createEmotionCache from '../createEmotionCache';
+
+
 
 import '../styles/globals.css';
 
@@ -33,21 +35,6 @@ const MyApp = ({ Component, pageProps }) => {
       </ThemeProvider>
     </CacheProvider>
   );
-};
-
-MyApp.getInitialProps = async ({ Component, ctx }) => {
-  let pageProps = {};
-
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps({ ctx });
-  }
-
-  if (ctx.req) {
-    ctx.store.dispatch(END);
-    await ctx.store.sagaTask.toPromise();
-  }
-
-  return { pageProps };
 };
 
 export default wrapper.withRedux(MyApp);

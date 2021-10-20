@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -6,7 +7,6 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { styled, useTheme } from '@mui/material/styles';
-
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -17,6 +17,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+
+
+import { categoriesSelector } from '../../services/categories';
 
 const drawerWidth = 240;
 
@@ -32,6 +35,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const MobileNavbar = ({ tabName = 'MyShop' }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const categories = useSelector(categoriesSelector);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -57,7 +61,7 @@ const MobileNavbar = ({ tabName = 'MyShop' }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {tabName}
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button href="/login" color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
 

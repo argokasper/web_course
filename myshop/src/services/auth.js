@@ -21,9 +21,9 @@ const ERROR_CODES = {
 };
 
 // ACTIONS
-export const requestLogin = ({ username, password }) => ({
+export const requestLogin = ({ email, password }) => ({
   type: REQUEST_LOGIN,
-  username,
+  email,
   password,
 });
 
@@ -34,7 +34,7 @@ export const loadingSelector = (state) => state.auth.loading;
 export const apiErrorSelector = (state) => state.auth.error;
 
 // SAGAS
-export function* requestLoginSaga({ username, password }) {
+export function* requestLoginSaga({ email, password }) {
   try {
     yield put({ type: REQUEST_LOGIN_SUCCESS });
   } catch (error) {

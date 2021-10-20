@@ -56,7 +56,7 @@ const initMigrations = async (tableName = 'migrations') => {
     await db.end();
     return results;
   } catch (err) {
-    throw Error(e.message);
+    throw Error(err.message);
   }
 };
 
@@ -81,7 +81,6 @@ const markAsMigrated = async (file) => {
   }
 }
 
-// Create "entries" table if doesn't exist
 async function migrate() {
   try {
     await initMigrations();

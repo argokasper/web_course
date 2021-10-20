@@ -1,6 +1,9 @@
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { END } from 'redux-saga'
+import { useSelector, useDispatch } from 'react-redux';
 
+import wrapper from '../store';
 import CategoriesMenu from '../components/CategoriesMenu';
 import ProductsBlock from '../components/ProductsBlock';
 
@@ -11,33 +14,22 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import styles from '../styles/Home.module.css';
+import { productsSelector, requestProducts } from '../services/products';
+import { categoriesSelector, requestCategories } from '../services/categories';
 
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const dispatch = useDispatch();
+  const categories = useSelector(categoriesSelector);
+  const products = useSelector(productsSelector);
 
   // ühekordne käima panemine
-  useEffect(async () => {
+  useEffect(() => {
     // Tahame pärida meie API käest tooteid:
-    try {
-      const response = await fetch('/api/products');
-      const productsResponse = await response.json();
-      setProducts(productsResponse.products);
-    } catch (error) {
-      console.error(error.message);
-      setProducts([]);
-    }
+    dispatch(requestProducts({}));
 
     // Tahame pärida meie API käest kategooriaid:
-    try {
-      const response = await fetch('/api/categories');
-      const categoriesResponse = await response.json();
-      setCategories(categoriesResponse.categories);
-    } catch (error) {
-      console.error(error.message);
-      setCategories([]);
-    }
+    dispatch(requestCategories({}));
   }, []);
 
   return (
@@ -57,5 +49,10 @@ const Home = () => {
     </>
   );
 };
+
+export const getStaticProps = wrapper.getStaticProps((store) => async ({ req }) => {
+  store.dispatch(END)
+  await store.sagaTask.toPromise()
+})
 
 export default Home;
