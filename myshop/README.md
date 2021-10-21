@@ -1,3 +1,34 @@
+## MyShop e-poe näidisprojekt
+Antud veebirakendus hõlmab endas *backend* ning *frontend* osasid.
+**Backend** asub `src/pages/api` kaustas ning **frontend** `src/pages` ilma `api` kaustata.
+
+### Olemasolevad komponendid:
+* CategoriesMenu (Kategooriate menüü)
+* Footer (Jalus)
+* Layout (Kõike ümbritsev *wrapper*, et oleks erinevatel lehtedel ühtlane stiil ning ülesehitus)
+* MobileNavbar (Päises asuv menüüriba, mis on nähtav ainult väiksematel ekraanidel (nt mobiilides))
+* ProductsBlock (*wrapper* tootete kuvamiseks ühes grupis/plokis)
+* ProductTile (Üksiku toote vormistus)
+
+### Olemasolevad leheküljed:
+* `/` - avaleht
+* `/login` - sisse logimiseks
+* `/tooted/{slug}` - üksiku toote vaade `slug`-i järgi
+* `/kategooriad/{slug}` - toodete vaade mingi kindla kategooria kohta
+
+### API ressursid:
+* `/categories` - tagastab kõik kategooriad JSON tekstina
+* `/categories/{slug}/products` - tagastab kõik tooted JSON tekstina, mis on mingi kategooria kohta
+* `/products` - tagastab kõik tooted JSON tekstina
+* `/products/{slug}` - tagastab ühe toote JSON tekstina
+
+### Teenused:
+Teenuste all mõtleme neid JS faile, mis koguvad kokku erinevad äriloogikad ning programmeerimisvõtted mingi objekti (kategooria, toote, jne) kohta. Seal võib leida funktsioone salvestamise, pärimise, muutmise ning muude tegevuste kohta mingi kindla asja kohta
+
+* `auth.js` - tegeleb kasutaja sisse-, väljalogimisega ning sessioni haldamisega
+* `categories.js` - hoiab endas kategooriatega seotud funktsioone ning muid tegevusi
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -27,8 +58,4 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

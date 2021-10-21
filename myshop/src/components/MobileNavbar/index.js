@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -58,9 +59,11 @@ const MobileNavbar = ({ tabName = 'MyShop' }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {tabName}
-          </Typography>
+          <Link href="/">
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              {tabName}
+            </Typography>
+          </Link>
           <Button href="/login" color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
@@ -89,7 +92,7 @@ const MobileNavbar = ({ tabName = 'MyShop' }) => {
         </DrawerHeader>
         <Divider />
         {categories.map((category, index) => (
-          <List>
+          <List key={category.id}>
             <ListItem button key={category.slug}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}

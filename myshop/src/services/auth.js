@@ -1,5 +1,29 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { HYDRATE } from 'next-redux-wrapper';
 
+const API_HOST = 'http://localhost:3000/api';
+
+// API requests:
+const login = async ({ email, password }) => {
+  const response = await fetch(`${API_HOST}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: {
+      email,
+      password,
+    },
+  });
+  return await response.json();
+};
+
+const logout = async () => {
+  const response = await fetch(`${API_HOST}/auth/logout`, {
+    method: 'POST',
+  });
+  return await response.json();
+};
 
 // ACTION TYPES
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
@@ -36,7 +60,8 @@ export const apiErrorSelector = (state) => state.auth.error;
 // SAGAS
 export function* requestLoginSaga({ email, password }) {
   try {
-    yield put({ type: REQUEST_LOGIN_SUCCESS });
+    const { user, token } = yield call(login, { email, password });
+    yield put({ type: REQUEST_LOGIN_SUCCESS, user });
   } catch (error) {
     yield put({
       type: REQUEST_LOGIN_FAILURE,
@@ -66,11 +91,17 @@ export function* saga() {
 // REDUCER
 const initialState = {
   loading: false,
+  user: null,
   error: null,
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case HYDRATE:
+        return {
+          ...state,
+          ...action.payload.auth,
+        };
     case REQUEST_LOGIN:
       return {
         loading: true,

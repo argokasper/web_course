@@ -5,11 +5,8 @@ const API_HOST = 'http://localhost:3000/api';
 
 // API requests:
 const getCategories = async ({ limit, page, sortBy, sortOrder }) => {
-  const response = await fetch(`${API_HOST}/categories/${slug}/categories?page=${page}&limit=${limit}&sort_by=${sortBy}&sort_order=${sortOrder}`);
-  const categoriesResponse = await response.json();
-  return {
-    categories: categoriesResponse?.catecategoriesgory,
-  };
+  const response = await fetch(`${API_HOST}/categories?page=${page}&limit=${limit}&sort_by=${sortBy}&sort_order=${sortOrder}`);
+  return await response.json();
 };
 
 // ACTION TYPES

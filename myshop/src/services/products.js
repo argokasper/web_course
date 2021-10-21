@@ -5,7 +5,7 @@ const API_HOST = 'http://localhost:3000/api';
 
 // API requests:
 const getProducts = async ({
-  categorySlugs,
+  categorySlugs = [],
   limit,
   page,
   sortBy,
@@ -16,10 +16,7 @@ const getProducts = async ({
       ','
     )}`
   );
-  const productResponse = await response.json();
-  return {
-    product: productResponse?.product,
-  };
+  return await response.json();
 };
 
 // ACTION TYPES

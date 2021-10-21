@@ -10,7 +10,7 @@ const CategoriesMenu = ({ categories = [] }) => {
             <h3>Kategooriad</h3>
             <menu className={styles.wrapper}>
                 {categories.map(category => (
-                    <div className={styles.category}>
+                    <div className={styles.category} key={category.id}>
                         <Link href={`/kategooriad/${category.slug}`}>{category.name}</Link>
                     </div>
                 ))}
