@@ -1,29 +1,39 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 
 import styles from '../styles/Login.module.css';
-import { requestLogin } from '../services/auth';
+import { loginSuccessSelector, requestLogin } from '../services/auth';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const loginSuccess = useSelector(loginSuccessSelector);
 
   useEffect(() => {
-    setEmailError(!email.length);
-    setPasswordError(!password.length);
-  }, [email, password]);
+    if (loginSuccess) router.replace('/');
+  }, [loginSuccess]);
+
+  const validateEmail = (value) => {
+    setEmailError(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)));
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (email && password) {
+
+    validateEmail(email);
+    setPasswordError(!password.length);
+
+    if (!emailError && !passwordError) {
       dispatch(requestLogin({ email, password }));
-      console.log('loggin in');
     }
   };
 
@@ -43,7 +53,7 @@ const Login = () => {
         id="outlined-error"
         label="E-posti aadress"
         value={email}
-        helperText={emailError ? 'Sisesta e-posti aadress' : ''}
+        helperText={emailError ? 'Sisesta korrektne e-posti aadress' : ''}
         type="email"
         onInput={(e) => setEmail(e.target.value)}
       />
@@ -56,9 +66,10 @@ const Login = () => {
         type="password"
         onInput={(e) => setPassword(e.target.value)}
       />
-      <Button disabled={emailError || passwordError} variant="contained" type="submit" className={styles.button}>
+      <Button variant="contained" type="submit" className={styles.button}>
         Logi sisse
       </Button>
+      <Link href="/register">Konto puudub, mine registreerima</Link>
     </Box>
   );
 };

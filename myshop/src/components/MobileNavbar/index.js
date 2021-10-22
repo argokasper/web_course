@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -19,8 +19,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 
-
 import { categoriesSelector } from '../../services/categories';
+import { loggedInSelector, requestLogout } from '../../services/auth';
 
 const drawerWidth = 240;
 
@@ -34,9 +34,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 const MobileNavbar = ({ tabName = 'MyShop' }) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const categories = useSelector(categoriesSelector);
+  const isUserLoggedIn = useSelector(loggedInSelector);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -64,7 +66,15 @@ const MobileNavbar = ({ tabName = 'MyShop' }) => {
               {tabName}
             </Typography>
           </Link>
-          <Button href="/login" color="inherit">Login</Button>
+          {isUserLoggedIn ? (
+            <Button onClick={() => dispatch(requestLogout())} color="inherit">
+              Logi välja
+            </Button>
+          ) : (
+            <Button href="/login" color="inherit">
+              Logi sisse
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
 

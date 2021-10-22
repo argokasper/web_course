@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-const MIGRATIONS_DIR = path.resolve(process.cwd(), 'migrations');
+const MIGRATIONS_DIR = path.resolve(process.cwd(), 'database/migrations');
 
 const envLocalPath = path.resolve(process.cwd(), '.env.local');
 const envPath = path.resolve(process.cwd(), '.env');
