@@ -2,7 +2,7 @@
 Antud veebirakendus hõlmab endas *backend* ning *frontend* osasid.
 **Backend** asub `src/pages/api` kaustas ning **frontend** `src/pages` ilma `api` kaustata.
 
-### Olemasolevad komponendid:
+### Olemasolevad komponendid (kaustas `src/components`):
 * CategoriesMenu (Kategooriate menüü)
 * Footer (Jalus)
 * Layout (Kõike ümbritsev *wrapper*, et oleks erinevatel lehtedel ühtlane stiil ning ülesehitus)
@@ -10,23 +10,30 @@ Antud veebirakendus hõlmab endas *backend* ning *frontend* osasid.
 * ProductsBlock (*wrapper* tootete kuvamiseks ühes grupis/plokis)
 * ProductTile (Üksiku toote vormistus)
 
-### Olemasolevad leheküljed:
+### Olemasolevad leheküljed (kaustas `src/pages`):
 * `/` - avaleht
 * `/login` - sisse logimiseks
-* `/tooted/{slug}` - üksiku toote vaade `slug`-i järgi
+* `/register` - vaade koos vormiga uue kasutaja sisse logimiseks
+* `/tooted/{id}` - üksiku toote vaade tema `id`-i järgi
 * `/kategooriad/{slug}` - toodete vaade mingi kindla kategooria kohta
 
-### API ressursid:
+### API ressursid (kaustas `src/pages/api`):
+* `/auth/register` - uue kasutaja registreerimiseks
+* `/auth/login` - kasutaja sisse logimiseks
+* `/auth/logout` - kasutaja välja logimiseks
 * `/categories` - tagastab kõik kategooriad JSON tekstina
 * `/categories/{slug}/products` - tagastab kõik tooted JSON tekstina, mis on mingi kategooria kohta
 * `/products` - tagastab kõik tooted JSON tekstina
-* `/products/{slug}` - tagastab ühe toote JSON tekstina
+* `/products/{id}` - tagastab ühe toote JSON tekstina
 
-### Teenused:
+### Teenused (kaustas `src/services`):
 Teenuste all mõtleme neid JS faile, mis koguvad kokku erinevad äriloogikad ning programmeerimisvõtted mingi objekti (kategooria, toote, jne) kohta. Seal võib leida funktsioone salvestamise, pärimise, muutmise ning muude tegevuste kohta mingi kindla asja kohta
 
 * `auth.js` - tegeleb kasutaja sisse-, väljalogimisega ning sessioni haldamisega
-* `categories.js` - hoiab endas kategooriatega seotud funktsioone ning muid tegevusi
+* `category.js` - hoiab endas ühe kategooriaga seotud funktsioone ning muid tegevusi
+* `categories.js` - hoiab endas paljude kategooriatega seotud funktsioone ning muid tegevusi
+* `product.js` - hoiab endas ühe tootega seotud funktsioone ning muid tegevusi
+* `products.js` - hoiab endas paljude toodetega seotud funktsioone ning muid tegevusi
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
